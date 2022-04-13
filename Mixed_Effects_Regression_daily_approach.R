@@ -1,6 +1,6 @@
 "
-Author: Pedro Gonzalez
-Date: April 8th 2021
+Author: Pedro Gonzalez & Xinru Li
+Date: April 13th 2022
 University of British Columbia
 "
 
@@ -59,7 +59,7 @@ stargazer(m, type = "text",
           star.cutoffs = c(0.05, 0.01, 0.001),
           digit.separator = "")
 
-# to get the r2; will returns the marginal and the conditional R²
+# to get the r2; will returns the marginal and the conditional R?
 r.squaredGLMM(m)
 
 # To extract the residuals (errors) and summarize them, 
