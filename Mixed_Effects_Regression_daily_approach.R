@@ -22,7 +22,7 @@ library(ncf) # to compute MORAN's Index and Mantel test
 hdp <- read.csv("df_sst_clouds.csv")
 
 # perform a simple lm (to compare outputs)
-basic.lm <- lm(SEVERITY_CODE ~ DHW * CF_a_runmean30, data = hdp)
+basic.lm <- lm(SEVERITY_CODE ~ DHW * CF_a_runmean30, data = hdp) # lm() without random effects
 summary(basic.lm)
 #plot qq plot
 plot(basic.lm, which = 2)
@@ -32,7 +32,7 @@ plot(basic.lm, which = 2)
 ########## =============== ##########
 
 # lmerTESt::lmer 
-m <- lmer(SEVERITY_CODE ~ DHW * CF_a_runmean30 +
+m <- lmer(SEVERITY_CODE ~ DHW * CF_a_runmean30 +  #lmer() with random effects
             (1 | lat:YEAR), data = hdp)
 summary(m)
 
@@ -41,7 +41,7 @@ theme_set(theme_sjplot2())
 plot_model(m, sort.est = TRUE,
            show.values = TRUE, value.offset = .3)
 
-# Reference: Kutner, et al. (2005). Applied Linear Statistical Models. McGraw-Hill. (Ch. 8)
+# Reference: Kutner, et al. (2005). Applied Linear Statistical Models. McGraw-Hill. (Ch. 8), learning material
 
 #plot qq plot
 library("car")
@@ -53,7 +53,7 @@ qqline(resid(m))
 plot(m, which = 2) 
 
 # plot results in a nice table 
-# Use this only with "lmer" and not with lmerTest 
+# Use this only with "lmer" and not with lmerTest  
 stargazer(m, type = "text",
           digits = 3,
           star.cutoffs = c(0.05, 0.01, 0.001),
@@ -76,7 +76,7 @@ anova(m)
 
 # alternative (it does not suppor 'stargazer' package)
 # # lmerTest
-# mm <- lmerTest::lmer(SEVERITY_CODE ~ DHW + CF_a_runmean7 +
+# mm <- lmerTest::lmer(SEVERITY_CODE ~ DHW + CF_a_runmean7 + #with lmertest, stargazer() cannot be used
 #                        (1 | lat) +
 #                        (1 | lon), data = hdp)
 # summary(mm)
@@ -88,6 +88,6 @@ plot_model(m, type = "int", show.p = TRUE,
            terms = c("DHW_adj_date", 'CF_a_runmean30_adj_date'))
 # Aiken and West (1991). Multiple Regression: Testing and Interpreting Interactions.
   
-library(emmeans)
+library(emmeans)   #
 emmeans(m, pairwise ~ DHW|CF_a_runmean30, lmerTest.limit = 20978,
         pbkrtest.limit = 20978)
